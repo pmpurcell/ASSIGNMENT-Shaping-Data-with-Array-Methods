@@ -190,11 +190,43 @@ const searchBusinesses = () => {
 
 }
 
+const businessOrders = businesses[0].orders;
+const oneBusinessSum = (currentTotal, nextValue) => currentTotal += nextValue;
+
+
+// const allBusinessOrders = () => {
+//   businesses.forEach((business) => {
+//   business.orders.reduce(oneBusinessSum);
+//   });
+// }
+
+// Array to contain all the big spenders
+const bigSpenders = businesses.filter(business => {
+ let bigSpender = false;
+
+ if (business.orders[0] >= 9000){
+   bigSpender = true;
+ } else if (business.orders[1] >= 9000){
+  bigSpender = true;
+ } else if (business.orders[2] >= 9000){
+  bigSpender = true;
+} else if (business.orders[3] >= 9000){
+  bigSpender = true;
+} else if (business.orders[4] >= 9000){
+  bigSpender = true;
+}
+
+ return bigSpender;
+})
+
+
+
 const init = () => {
     initialScreen();
     businessCardBuilder(businesses);
     console.table(agents);
     searchBusinesses();
+    console.log(bigSpenders);
 };
 
 init();
