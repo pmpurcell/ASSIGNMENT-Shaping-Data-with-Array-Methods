@@ -111,4 +111,90 @@ const businesses = [
     }
   ];
 
-  export default businesses;
+const renderToDom = (divId, content) => {
+    const selectedDiv = document.querySelector(divId);
+    selectedDiv.innerHTML = content;
+  };
+
+
+  const initialScreen = () =>  {
+    const domString = `
+    <h1>Dotard & Simbleton</h1>
+    `
+    renderToDom('#titleBar', domString);
+};
+
+const businessCardBuilder = (array) => {
+    let domString = " "
+
+    array.forEach((item) => {
+        domString += `
+        <h3> ${item.companyName} </h3>
+        <p> ${item.addressFullStreet} </p>
+        <p> ${item.addressCity}, ${item.addressStateCode}, ${item.addressZipCode} </p>
+        `
+    });
+    renderToDom ("#businessContainer", domString);
+}
+
+const newYorkBusinesses = businesses.filter(business => {
+    let inNewYork = false;
+
+    if (business.addressStateCode === "NY") {
+        inNewYork = true;
+    }
+
+    return inNewYork;
+});
+
+const manuBusinesses = businesses.filter(business => {
+    let inManu = false;
+
+    if (business.companyIndustry === "Manufacturing") {
+        inManu = true;
+    }
+
+    return inManu;
+});
+
+const agents = businesses.map(business => {
+    return business.purchasingAgent;
+});
+
+const printFoundBusinesses = (array) => {
+    let domString = " "
+
+    array.forEach((item) => {
+        domString += `
+        <h3> ${item.companyName} </h3>
+        <p> ${item.addressFullStreet} </p>
+        <p> ${item.addressCity}, ${item.addressStateCode}, ${item.addressZipCode} </p>
+        `
+    });
+    renderToDom ("#resultsContainer", domString);
+}
+
+const searchBusinesses = () => {
+    document.querySelector("#companySearch").addEventListener("keypress", keyPressEvent => {
+
+        if (keyPressEvent.charCode === 13) {
+            const foundBusinesses= businesses.find(business => 
+                business.companyName.includes(keyPressEvent.target.value))
+
+                console.log(foundBusinesses)
+
+                printFoundBusinesses(foundBusinesses);
+        };
+
+    });
+
+}
+
+const init = () => {
+    initialScreen();
+    businessCardBuilder(businesses);
+    console.table(agents);
+    searchBusinesses();
+};
+
+init();
